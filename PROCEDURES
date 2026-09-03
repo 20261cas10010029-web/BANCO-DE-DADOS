@@ -1,0 +1,56 @@
+create database aulaprocedure;
+use aulaprocedure;
+
+create table funcionarios(
+id_funcionario int not null auto_increment,
+nome varchar (50) not null,
+salario int not null,
+primary key (id_funcionario)
+);
+
+insert into funcionarios(nome,salario)
+values
+("joao paulo",1000),
+("daniel silva",1500),
+("axel manoel",3000),
+("slash madureira",5999)
+
+DELIMITER $$
+create procedure aumenta_salario(
+idf int)
+begin
+  update funcionarios set salario = salario +300
+  where funcionarios.id_funcionario = idf;
+
+end $$
+
+DELIMITER ;
+
+
+select * from funcionarios
+
+
+call aumenta_salario(3);
+
+DELIMITER $$
+create procedure selecionar_funcionarios(in quantidade int)
+begin
+select * from funcionarios
+limit quantidade;
+
+end $$
+DELIMITER ;
+
+call selecionar_funcionarios(2);
+
+//SAIDA DE DADOS PARA UMA VARIAVEL
+DELIMITER $$
+create procedure verificar_qtd_funcionarios(out quantidade int)
+begin
+select count(*) into quantidade from funcionarios;
+end $$
+DELIMITER ;
+
+
+call verificar_qtd_funcionarios(@total);
+select @total;
